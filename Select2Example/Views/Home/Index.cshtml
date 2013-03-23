@@ -1,0 +1,53 @@
+﻿@model Select2Example.Models.HomeModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Without Select2</h2>
+<select>
+    @foreach (var a in Model.Actors)
+    {    
+        <option value="@a.ID">@a.Name</option>
+    }
+</select>
+<h2>Select2 Examples</h2>
+<h3>Basic</h3>
+<select id="basicSelect" style="width:300px">
+    <!--The following blank option must be added to allow select2 to set the placeholder text-->
+    <option value=""></option>
+    @foreach (var a in Model.Actors)
+    {    
+        <option value="@a.ID">@a.Name</option>
+    }
+</select>
+<h3>Load Results Via AJAX</h3>
+<input id="ajaxSelect" type="hidden" style="width:300px"/>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            //this javascript loads a select2 from data options in the select html
+            $('#basicSelect').select2({ placeholder: 'Select an Actor' });
+
+            //this javascript call sets up the select2 that loads search results via ajax calls
+            $('#ajaxSelect').select2(   {
+                                            placeholder: 'Select an Actor' ,
+                                            minimumInputLength: 1,
+                                            ajax: { 
+                                                url: '@Url.Action("SearchActors", "Home")',
+                                                dataType: 'json',
+                                                data: function (term, page) {
+                                                    return {
+                                                        searchTerm: term
+                                                    };
+                                                },
+                                                results: function (data, page) {                                                     
+                                                    return {results: data};
+                                                }
+                                            }
+                                        });
+
+
+        });
+    </script>
+}

@@ -1,0 +1,1 @@
+﻿This project provides example code on how to use the Select2 jquery plugin with ASP.NET MVC.
